@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo Management System</title>
+    <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+</head>
+<body>
+  <div class="container my-2">
+    <h1>Todo List</h1>
+    <table border="1"  class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th> Todo title</th>
+          <th> Todo deadline</th>
+          <th> Todo user</th>
+          <th> Actions </th>
+        </tr>
+      </thead>
+    <tbody>
+    <tr th:each="todo : ${listTodos}">
+      <td th:text="${todo.title}"></td>
+      <td th:text="${todo.deadline}"></td>
+      <td th:text="${todo.user}"></td>
+      <td> <a th:href="@{/showFormForUpdate/{id}(id=${todo.id})}" class="btn btn-outline-dark">Update</a>
+        <a th:href="@{/deleteTodo/{id}(id=${todo.id})}" class="btn btn-outline-warning">Delete</a></td>
+    </tr>
+    </tbody>
+  </table>
+    <div th:if = "${totalPages > 1}">
+      <div class = "row col-sm-10">
+        <div class = "col-sm-2">
+          Total Rows: [[${totalItems}]]
+        </div>
+        <div class = "col-sm-1">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}"> [[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
+					</span>
+        </div>
+        <div class = "col-sm-1">
+          <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Next</a>
+          <span th:unless="${currentPage < totalPages}">Next</span>
+        </div>
+        <div class="col-sm-1">
+          <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}}">Last</a>
+          <span th:unless="${currentPage < totalPages}">Last</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <a th:href = "@{/showNewTodoForm}" class= "btn btn-outline-dark btn-sm mb-3"> Add Todo </a>
+    </div>
+</div>
+
+</body>
+</html>
